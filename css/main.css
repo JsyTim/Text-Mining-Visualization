@@ -1,0 +1,39 @@
+html,
+body {
+  font-family: Arial;
+  height: 100%;
+}
+
+.navbar {
+  background-color: #e74c3c !important;
+}
+
+.navbar .navbar-brand {
+  color: #ecf0f1 !important;
+}
+
+.navbar .navbar-brand:hover,
+.navbar .navbar-brand:focus {
+  color: #ffbbbc !important;
+}
+
+.navbar .navbar-text {
+  color: #ecf0f1 !important;
+}
+
+.footer {
+  height: 50px;
+  background-color: #e74c3c;
+  position: bottom;
+}
+
+.footer-copyright {
+  font-size: 15pt;
+  text-align: center;
+  color: #ecf0f1 !important;
+}
+
+.footer .footer-copyright:hover,
+.footer .footer-copyright:focus {
+  color: #ffbbbc !important;
+}

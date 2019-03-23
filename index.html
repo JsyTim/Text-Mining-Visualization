@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Text-Mapping Visualization</title>
+    <!-- js for jquery -->
+    <script src="http://code.jquery.com/jquery-3.3.1.js"></script>
+    <!-- js for bootstrap -->
+    <script src="js/bootstrap.js"></script>
+
+    <!-- js for map -->
+    <script src="js/map.js"></script>
+
+    <!-- css for bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+
+    <!-- css for main -->
+    <link rel="stylesheet" href="css/main.css">
+
+  </head>
+  <body>
+    <!-- navigation -->
+    <!-- <nav class="navbar navbar-default" role="navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand">Text-Mapping Visualization</a>
+        </div>
+      <div>
+    </nav> -->
+    <nav class="navbar navbar-inverse">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">Text-Mapping Visualization</a>
+        </div>
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="#">Home</a></li>
+          <li><a href="#">Information</a></li>
+          <li><a href="#">Predict</a></li>
+        </ul>
+        <form class="navbar-form navbar-left" action="/action_page.php">
+          <div class="form-group">
+            <input type="text" class="form-control" placeholder="Search">
+          </div>
+          <button type="submit" class="btn btn-default">Submit</button>
+        </form>
+      </div>
+    </nav>
+    <!-- container-fluid -->
+    <div class="container-fluid">
+      <div class="row">
+        <!-- div for geo-Mapping -->
+        <div class="col-md-6" style="min-height:800px; background-color: red">Map</div>
+        <!-- div for wordcloud -->
+        <div class="col-md-6" style="min-height:400px; background-color: yellow">Network</div>
+        <!-- div for network -->
+        <div class="col-md-6" style="min-height:400px; background-color: orange">Wordcloud</div>
+      </div><!-- row -->
+    </div><!-- container -->
+
+    <!-- Footer -->
+    <footer class="navbar fixed-bottom">
+      <!-- Copyright -->
+      <div class="footer-copyright">© 2018 Copyright:
+        <a href="#">http://www.myweb.ttu.edu/tnhondan/teaching.html</a>
+      </div>
+      <!-- Copyright -->
+    </footer>
+    <!-- Footer -->
+  </body>
+</html>
