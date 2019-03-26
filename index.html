@@ -8,8 +8,11 @@
     <!-- js for bootstrap -->
     <script src="js/bootstrap.js"></script>
 
+    <!-- js for d3 -->
+    <script src="js/d3.js"></script>
+
     <!-- js for map -->
-    <script src="js/map.js"></script>
+    <!-- <script src="js/map.js"></script> -->
 
     <!-- css for bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
@@ -19,6 +22,9 @@
 
   </head>
   <body>
+    <!-- js for network-->
+    <script src="js/network.js"></script>
+
     <!-- navigation -->
     <!-- <nav class="navbar navbar-default" role="navigation">
       <div class="container-fluid">
@@ -49,11 +55,14 @@
     <div class="container-fluid">
       <div class="row">
         <!-- div for geo-Mapping -->
-        <div class="col-md-6" style="min-height:800px; background-color: red">Map</div>
+        <div class="col-md-12" style="min-height:500px; background-color: red">Map</div>
+      </div><!-- row -->
+      <div class="row">
         <!-- div for wordcloud -->
-        <div class="col-md-6" style="min-height:400px; background-color: yellow">Network</div>
-        <!-- div for network -->
-        <div class="col-md-6" style="min-height:400px; background-color: orange">Wordcloud</div>
+        <div id ="network" class="col-md-12" style="min-height:500px;">Network</div>
+      </div><!-- row -->
+      <div class="row">
+        <div class="col-md-12" style="min-height:500px; background-color: orange">Wordcloud</div>
       </div><!-- row -->
     </div><!-- container -->
 

@@ -2,7 +2,7 @@ var genres = {};
 var movies = {};
 var dataset = [];
 
-var MAX_NUM = 360;
+var MAX_NUM = 90;
 
 //read data_network
 d3.tsv("data_network/movies.dat").then( data => {
@@ -96,17 +96,19 @@ d3.tsv("data_network/movies.dat").then( data => {
 
     // console.log(dataset.outer.reduce( (a,b) => { return a + b.related_links.length;}, 0)/dataset.outer.length);
 
-    var colors = ["#FB8577","#F98396","#E98AB4","#CB96CC","#A2A3D8","#72AED8","#42B6CA","#28BAB2","#41BB93","#66B973","#8BB457","#AEAC45","#CDA143","#E79550","#F88969"]
+    var colors = ["#F78571","#F98286","#F4839C","#E788B1","#D490C2","#BB99CF","#9DA2D6","#7DAAD7","#5BB1D0","#3CB6C4","#2CB9B3","#37BA9E","#4EBA87","#68B871","#82B55D","#9BB04E","#B3AA44","#C9A243","#DD9A4A","#ED9157"];
+    // console.log(colors.length);
     var color = d3.scaleLinear()
                   .domain([60, 220])
-                  .range([colors.length - 1], 0)
+                  .range([colors.length-1, 0])
                   .clamp(true);
 
-    var diameter= 960;
+    var diameter= 750;
+    var cavas_size = diameter + 300;
     var rect_width = 100;
-    var rect_height = 20;
+    var rect_height = diameter/dataset.inner.length - 20;
 
-    var link_width = "2px";
+    var link_width = "1px";
 
     var il = dataset.inner.length;
     var ol = dataset.outer.length;
@@ -118,7 +120,7 @@ d3.tsv("data_network/movies.dat").then( data => {
     mid  = (dataset.outer.length/2.0);
     var outer_x = d3.scaleLinear()
                     .domain([0, mid, mid, dataset.outer.length])
-                    .range([15, 170, 190, 355]);
+                    .range([15, 170, 190, 350]);
     var outer_y = d3.scaleLinear()
                     .domain([0, dataset.outer.length])
                     .range([0, diameter / 2 - 120]);
@@ -145,38 +147,113 @@ d3.tsv("data_network/movies.dat").then( data => {
       return ((x - 90) / 180 * Math.PI) - (Math.PI/2);
     }
 
-    // var linkdata = dataset.links.map(d => {
-    //   return {
-    //     source: {
-    //       x: dataset.outer.y * Math.cos(projectX(dataset.outer.x)),
-    //       y: -dataset.outer.y * Math.sin(projectX(dataset.outer.x))
-    //     },
-    //     target: {
-    //       x: dataset.inner.y + rect_height/2,
-    //       y: -dataset.outer.x > 180 ? dataset.inner.x : dataset.inner.x + rect_width
-    //     }
-    //   }
-    // });
+    var svg = d3.select("#network").append("svg")
+                .attr("width", cavas_size)
+                .attr("height", cavas_size)
+                .append("g")
+                .attr("transform", "translate(" + cavas_size/2 + "," + cavas_size/2 + ")");
 
-    // var diagonal = d3.linkHorizontal()
-    //                  .x( d => d.x)
-    //                  .y( d => d.y);
-    //
-    //
-    // var svg = d3.select("#network").append("svg")
-    //             .attr("width", diameter)
-    //             .attr("height", diameter)
-    //             .append("g")
-    //             .attr("transform", "translate(" + diameter/2 + "," + diameter/2 + ")");
-    //
-    // // links
-    // var link = svg.append('g').attr('class', 'links').selectAll('.link')
-    //               .data(dataset.links)
-    //               .enter().append('path')
-    //               .attr('id', d => d.id)
-    //               .attr("d", diagonal(linkdata))
-    //               .attr('stroke', d => get_color(d.inner.name))
-    //               .attr('stroke-width', link_width);
+    //links
+    var link = svg.append('g').attr('class', 'links').selectAll('.link')
+                  .data(dataset.links)
+                  .enter().append('path')
+                  .attr('id', d => d.id)
+                  .attr("d", d => {
+                    var source = {x: d.outer.y * Math.cos(projectX(d.outer.x)),
+                                  y: -d.outer.y * Math.sin(projectX(d.outer.x))};
+                    var target = {x: d.inner.y + rect_height/2,
+                                  y: d.outer.x > 180 ? d.inner.x : d.inner.x + rect_width};
+                    return diagonal(source, target);
+                  })
+                  .style("fill", "none")
+                  .attr('stroke', d => {
+                    // console.log(d.inner.name);
+                    return get_color(d.inner.name);})
+                  .attr('stroke-width', link_width);
+
+    //outer nodes
+    var onode = svg.append('g').attr("class", "outer_node").selectAll(".outer_node")
+                   .data(dataset.outer)
+                   .enter().append("g")
+                   .attr("transform", d => {return "rotate(" + (d.x - 90) + ")translate(" + d.y + ")";})
+                   .on("mouseover", mouseover)
+                   .on("mouseout", mouseout);
+    onode.append("circle")
+         .attr('id', d => d.id)
+         .attr('r', 3);
+
+    onode.append("circle")
+         .attr('r', 5)
+         .attr('visibility', 'hidden');
+
+    onode.append("text")
+         .attr('id', d => {return d.id + '-txt'})
+         .attr('dy', '.31em')
+         .attr('text-anchor', d => {return d.x < 180 ? "start" : "end";})
+         .attr("transform", d => { return d.x < 180 ? "translate(8)" : "rotate(180)translate(-8)"; })
+         .text(d => d.name);
+
+    // inner nodes
+    var inode = svg.append('g').attr("class", "inner_node").selectAll(".inner_node")
+                   .data(dataset.inner)
+                   .enter().append("g")
+                   .attr("transform", (d, i) => { return "translate(" + d.x + "," + d.y + ")";})
+                   .on("mouseover", mouseover)
+                   .on("mouseout", mouseout);
+
+    // inode.append('rect')
+    //    .attr('width', rect_width)
+    //    .attr('height', rect_height)
+    //    .attr('id', d => d.id);
+       // .attr('fill', function(d) { return get_color(d.name); });
+
+    inode.append("text")
+    	.attr('id', function(d) { return d.id + '-txt'; })
+       .attr('text-anchor', 'middle')
+       .attr("transform", "translate(" + rect_width/2 + ", " + rect_height * .75 + ")")
+       .text(d => d.name);
+
+    // need to specify x/y/etc
+
+    // d3.select(self.frameElement).style("height", diameter - 150 + "px");
+
+    function mouseover(d)
+    {
+    	// bring to front
+    	d3.selectAll('.links .link').sort(function(a, b){ return d.related_links.indexOf(a.id); });
+
+       for (var i = 0; i < d.related_nodes.length; i++)
+       {
+           d3.select('#' + d.related_nodes[i]).classed('highlight', true);
+           d3.select('#' + d.related_nodes[i] + '-txt').attr("font-weight", 'bold');
+       }
+
+       for (var i = 0; i < d.related_links.length; i++)
+           d3.select('#' + d.related_links[i]).attr('stroke-width', '5px');
+    }
+
+    function mouseout(d)
+    {
+       for (var i = 0; i < d.related_nodes.length; i++)
+       {
+           d3.select('#' + d.related_nodes[i]).classed('highlight', false);
+           d3.select('#' + d.related_nodes[i] + '-txt').attr("font-weight", 'normal');
+       }
+
+       for (var i = 0; i < d.related_links.length; i++)
+           d3.select('#' + d.related_links[i]).attr('stroke-width', link_width);
+    }
+
+    // Creates a curved (diagonal) path from parent to the child nodes
+    function diagonal(s, d) {
+      path = `M ${s.y} ${s.x}
+              C ${(s.y + d.y) / 2} ${s.x},
+                ${(s.y + d.y) / 2} ${d.x},
+                ${d.y} ${d.x}`
+      return path
+    };
+
+
 
 
   });
