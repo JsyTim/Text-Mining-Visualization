@@ -2,7 +2,7 @@ var genres = {};
 var movies = {};
 var dataset = [];
 
-var MAX_NUM = 90;
+var MAX_NUM = 120;
 
 //read data_network
 d3.tsv("data_network/movies.dat").then( data => {
@@ -80,6 +80,7 @@ d3.tsv("data_network/movies.dat").then( data => {
       links: links
     }
     console.log(dataset);
+    // console.log(dataset.inner.length);
 
     outer = dataset.outer;
     dataset.outer = Array(outer.length);
@@ -98,10 +99,10 @@ d3.tsv("data_network/movies.dat").then( data => {
 
     var colors = ["#F78571","#F98286","#F4839C","#E788B1","#D490C2","#BB99CF","#9DA2D6","#7DAAD7","#5BB1D0","#3CB6C4","#2CB9B3","#37BA9E","#4EBA87","#68B871","#82B55D","#9BB04E","#B3AA44","#C9A243","#DD9A4A","#ED9157"];
     // console.log(colors.length);
-    var color = d3.scaleLinear()
-                  .domain([60, 220])
-                  .range([colors.length-1, 0])
-                  .clamp(true);
+    // var color = d3.scaleLinear()
+    //               .domain([60, 220])
+    //               .range([colors.length-1, 0])
+    //               .clamp(true);
 
     var diameter= 750;
     var cavas_size = diameter + 300;
@@ -120,7 +121,7 @@ d3.tsv("data_network/movies.dat").then( data => {
     mid  = (dataset.outer.length/2.0);
     var outer_x = d3.scaleLinear()
                     .domain([0, mid, mid, dataset.outer.length])
-                    .range([15, 170, 190, 350]);
+                    .range([15, 165, 195, 350]);
     var outer_y = d3.scaleLinear()
                     .domain([0, dataset.outer.length])
                     .range([0, diameter / 2 - 120]);
@@ -137,10 +138,10 @@ d3.tsv("data_network/movies.dat").then( data => {
     });
 
     function get_color(name) {
-      var c = Math.round(color(name));
-      if(isNaN(c))
-        return '#dddddd';
-      return colors[c];
+      var array = dataset.inner.map(d => d.name);
+      // console.log(array)
+      var index = array.indexOf(name)
+      return colors[index];
     }
 
     function projectX(x) {
@@ -166,9 +167,7 @@ d3.tsv("data_network/movies.dat").then( data => {
                     return diagonal(source, target);
                   })
                   .style("fill", "none")
-                  .attr('stroke', d => {
-                    // console.log(d.inner.name);
-                    return get_color(d.inner.name);})
+                  .attr('stroke', d => get_color(d.inner.name))
                   .attr('stroke-width', link_width);
 
     //outer nodes
@@ -178,6 +177,7 @@ d3.tsv("data_network/movies.dat").then( data => {
                    .attr("transform", d => {return "rotate(" + (d.x - 90) + ")translate(" + d.y + ")";})
                    .on("mouseover", mouseover)
                    .on("mouseout", mouseout);
+
     onode.append("circle")
          .attr('id', d => d.id)
          .attr('r', 3);
@@ -201,21 +201,17 @@ d3.tsv("data_network/movies.dat").then( data => {
                    .on("mouseover", mouseover)
                    .on("mouseout", mouseout);
 
-    // inode.append('rect')
-    //    .attr('width', rect_width)
-    //    .attr('height', rect_height)
-    //    .attr('id', d => d.id);
-       // .attr('fill', function(d) { return get_color(d.name); });
+    inode.append('rect')
+       .attr('width', rect_width)
+       .attr('height', rect_height)
+       .attr('id', d => d.id)
+       .attr('fill', d => get_color(d.name));
 
     inode.append("text")
     	.attr('id', function(d) { return d.id + '-txt'; })
        .attr('text-anchor', 'middle')
        .attr("transform", "translate(" + rect_width/2 + ", " + rect_height * .75 + ")")
        .text(d => d.name);
-
-    // need to specify x/y/etc
-
-    // d3.select(self.frameElement).style("height", diameter - 150 + "px");
 
     function mouseover(d)
     {
@@ -225,11 +221,11 @@ d3.tsv("data_network/movies.dat").then( data => {
        for (var i = 0; i < d.related_nodes.length; i++)
        {
            d3.select('#' + d.related_nodes[i]).classed('highlight', true);
-           d3.select('#' + d.related_nodes[i] + '-txt').attr("font-weight", 'bold');
+           d3.select('#' + d.related_nodes[i] + '-txt').attr("font-weight", 'bold').attr("font-size", "15px");
        }
 
        for (var i = 0; i < d.related_links.length; i++)
-           d3.select('#' + d.related_links[i]).attr('stroke-width', '5px');
+           d3.select('#' + d.related_links[i]).attr('stroke-width', '3.5px');
     }
 
     function mouseout(d)
@@ -237,7 +233,7 @@ d3.tsv("data_network/movies.dat").then( data => {
        for (var i = 0; i < d.related_nodes.length; i++)
        {
            d3.select('#' + d.related_nodes[i]).classed('highlight', false);
-           d3.select('#' + d.related_nodes[i] + '-txt').attr("font-weight", 'normal');
+           d3.select('#' + d.related_nodes[i] + '-txt').attr("font-weight", 'normal').attr("font-size", "12px");;
        }
 
        for (var i = 0; i < d.related_links.length; i++)
