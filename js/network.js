@@ -2,10 +2,34 @@ var genres = {};
 var movies = {};
 var dataset = [];
 
-var MAX_NUM = 120;
+var YEAR_SELECT = 2000;
+var MAX_NUM = 180;
 
 //read data_network
 d3.tsv("data_network/movies.dat").then( data => {
+
+  // List all years
+  var years = [];
+  data.forEach( d=> {
+    if( !years.includes(d.year)) {
+      years.push(d.year);
+    }
+  });
+  years.sort();
+  // console.log(years.length);
+
+  // year-movie directory
+  year_movie = {};
+  years.forEach( d=> {
+    year_movie[d] = [];
+  });
+  // Sort all movies by years
+  data.forEach( d=> {
+    year_movie[d.year].push(d);
+  });
+
+  // console.log(year_movie);
+
   //Parse movies
   data.forEach( d => {
     var key = d.id;
@@ -15,6 +39,7 @@ d3.tsv("data_network/movies.dat").then( data => {
     movies[key] = values;
   });
   // console.log(movies[1]);
+
   d3.tsv("data_network/movie_genres.dat").then(data => {
     //Parse genres
     var sel_movies = data.filter( d => d.movieID <= MAX_NUM);
@@ -28,6 +53,8 @@ d3.tsv("data_network/movies.dat").then( data => {
       }
     });
     // console.log(genres);
+
+
     // build dataset
     dataset = Object.keys(genres).map( key => {
       return [key, genres[key]];
