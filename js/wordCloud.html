@@ -23,7 +23,7 @@
 <body>
 <script>
 
-    var idCount = 1; // this one should be modify so it stores the movie id
+    var idCount = 1; // this one should be modify so it stores the movie id, the 1 is to just have it read something at the moment
     var testOne = testData[idCount]; //testOne returns the tags and occurrences of the movie with id equal to idCount
     //console.log(testOne);
 
@@ -50,7 +50,7 @@
 
         //Creates the wordcloud
         btn.addEventListener ("click", function() {
-            //idCount = data.id;                        //This line is to set idCount equal to the movie id that we click on and needs to be modify to respond to click on the network
+            //idCount = data.id;                        //This line is to set idCount equal to the movie id that we click on and needs to be modify to respond to a click on the network
             //Update the WordCloud
             var testOne = testData[idCount];
             cloud = Highcharts.chart('container', {
