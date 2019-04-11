@@ -1,6 +1,7 @@
 # Project2: Text-Mining Visualization
 ## live demo：https://jsytim.github.io/Text-Mining-Visualization/
 
+
 Siyuan Jiang worked on the Geospaital visualization.
 
 Jie Li worked on the Network visualization.
@@ -8,6 +9,9 @@ Jie Li worked on the Network visualization.
 Roberto Gomez Pomares worked on the Text Visualization.
 
 We used leaflet d3, bootstrap and Highscharts libraries for this project.
+
+
+### Dataset
 
 We used a dataset extension of Movieslens10M, which carries a lot of information of over 10,000 movies from around the world in a span of about of around 90 years. The datasets have info such as the name of the movies, the countries they are from, year of release, genres, actors, directors, etc.
 
