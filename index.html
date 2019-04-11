@@ -26,7 +26,12 @@
 
     <!-- css for main -->
     <link rel="stylesheet" href="css/main.css">
-
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+    <script src="data/country.geo.json"></script>
+    <script src="data/region_concern.json"></script>
+    <link rel="stylesheet" type="text/css" href="css/map.css">
   </head>
   <body>
 
@@ -68,6 +73,7 @@
       <div class="row">
         <!-- div for geo-Mapping -->
         <div id="geospatial" class="col-md-12" style="min-height:960px; background-color: #f6f6f6">Map</div>
+        <script src="js/map.js"></script>
       </div><!-- row -->
       <div class="row">
         <!-- div for wordcloud -->
