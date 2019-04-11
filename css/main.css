@@ -81,3 +81,30 @@ text {
 .link {
     fill: none;
 }
+
+
+.slider-selection {
+	background: #ef3b2c !important;
+}
+
+.slider-handle {
+	background: #cb181d !important;
+}
+.slider-tick.in-selection{
+  background: #cb181d !important;
+}
+ .slider.slider-horizontal{
+   width:1000px !important;
+ }
+.slider .tooltip{
+  padding:2px;
+}
+.slider .tooltip-inner{
+  font-size: 18px;
+  opacity: 1;
+  background: #cb181d !important;
+}
+
+.tooltip.top .tooltip-arrow {
+   border-top-color: #f44336 !important;
+}
