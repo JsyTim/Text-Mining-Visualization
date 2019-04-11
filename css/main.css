@@ -48,12 +48,13 @@ text {
 }
 
 .inner_node rect {
+    stroke: #FFFFFF;
+    stroke-width: 1px;
     pointer-events: all;
 }
 
 .inner_node rect.highlight {
-    stroke: #315B7E;
-    stroke-width: 2px;
+    fill: #315B7E;
 }
 
 .outer_node circle {
@@ -66,7 +67,7 @@ text {
 .outer_node circle.highlight
 {
     stroke: #315B7E;
-    fill: #315B7E;
+    fill: #5c7fad;
     stroke-width: 2px;
 }
 

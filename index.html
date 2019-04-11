@@ -26,14 +26,20 @@
     <script src="js/network.js"></script>
 
     <!-- navigation -->
-    <!-- <nav class="navbar navbar-default" role="navigation">
-      <div class="container-fluid">
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
         <div class="navbar-header">
-          <a class="navbar-brand">Text-Mapping Visualization</a>
+          <a class="navbar-brand">Project2: Text, Network, and Geospatial Visualization</a>
         </div>
+        <ul class="nav navbar-nav">
+          <li><a href="#geospatial">Geospatial</a></li>
+          <li><a href="#network">Network</a></li>
+          <li><a href="#text">Text</a></li>
+        </ul>
       <div>
-    </nav> -->
-    <nav class="navbar navbar-inverse">
+    </nav>
+
+    <!-- <nav class="navbar navbar-inverse">
       <div class="container-fluid">
         <div class="navbar-header">
           <a class="navbar-brand" href="#">Text-Mapping Visualization</a>
@@ -50,30 +56,36 @@
           <button type="submit" class="btn btn-default">Submit</button>
         </form>
       </div>
-    </nav>
+    </nav> -->
     <!-- container-fluid -->
     <div class="container-fluid">
       <div class="row">
         <!-- div for geo-Mapping -->
-        <div class="col-md-12" style="min-height:500px; background-color: red">Map</div>
+        <div id="geospatial" class="col-md-12" style="min-height:960px; background-color: red">Map</div>
       </div><!-- row -->
       <div class="row">
         <!-- div for wordcloud -->
-        <div id ="network" class="col-md-12" style="min-height:500px;">Network</div>
+        <div id ="network" class="col-md-12" style="min-height:960px;">Network</div>
       </div><!-- row -->
       <div class="row">
-        <div class="col-md-12" style="min-height:500px; background-color: orange">Wordcloud</div>
+        <div id="text" class="col-md-12" style="min-height:960px; background-color: orange">Wordcloud</div>
       </div><!-- row -->
     </div><!-- container -->
 
-    <!-- Footer -->
-    <footer class="navbar fixed-bottom">
-      <!-- Copyright -->
-      <div class="footer-copyright">© 2018 Copyright:
-        <a href="#">http://www.myweb.ttu.edu/tnhondan/teaching.html</a>
+    <nav class="navbar navbar-default navbar-fixed-bottom">
+      <div class="container">
+        <p>Slider</p>
       </div>
+    </nav>
+
+    <!-- Footer -->
+    <!-- <footer class="navbar fixed-bottom"> -->
       <!-- Copyright -->
-    </footer>
+      <!-- <div class="footer-copyright">© 2018 Copyright: -->
+        <!-- <a href="#">http://www.myweb.ttu.edu/tnhondan/teaching.html</a> -->
+      <!-- </div> -->
+      <!-- Copyright -->
+    <!-- </footer> -->
     <!-- Footer -->
   </body>
 </html>
