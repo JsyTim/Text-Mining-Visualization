@@ -32,6 +32,8 @@
     <script src="data/country.geo.json"></script>
     <script src="data/region_concern.json"></script>
     <link rel="stylesheet" type="text/css" href="css/map.css"> -->
+    <script src="  https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.6.1/bootstrap-slider.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.6.1/css/bootstrap-slider.css">
   </head>
   <body>
 
@@ -68,8 +70,18 @@
     <nav class="navbar navbar-default navbar-fixed-bottom">
       <div class="container">
         <div class="row">
-          <div class="col-md-1"><p id="value" class="text-center text-color"></p></div>
-          <div class="col-md-11"><div id="slider"></div></div>
+          
+<!--           <div class="col-md-1"><p id="value" class="text-center text-color"></p></div>
+          <div class="col-md-11"><div id="slider"></div></div> -->
+          <div class="col-md-1"><div>
+              <div class="col-md-11">  <input id="ex1" type="text"
+                    data-provide="slider"
+            data-slider-id='ex1Slider'
+                    data-slider-min="1903"
+                    data-slider-max="2010"
+                    data-slider-step="1"
+                    data-slider-tooltip="show" /></div>
+            </div>
         </div>
         <script src="js/slider.js"></script>
       </div>
