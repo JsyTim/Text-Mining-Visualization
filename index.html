@@ -2,17 +2,21 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Text-Mapping Visualization</title>
+    <title>Text, Network, and Geospatial Visualization</title>
     <!-- js for jquery -->
     <script src="http://code.jquery.com/jquery-3.3.1.js"></script>
     <!-- js for bootstrap -->
-    <script src="js/bootstrap.js"></script>
+    <!-- <script src="js/bootstrap.js"></script> -->
 
     <!-- js for d3 -->
     <script src="js/d3.js"></script>
+    <!-- <script src="https://d3js.org/d3.v5.js"></script> -->
 
     <!-- js for map -->
     <!-- <script src="js/map.js"></script> -->
+
+    <!-- for slider -->
+    <script src="https://unpkg.com/d3-simple-slider"></script>
 
     <!-- css for bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
@@ -20,10 +24,14 @@
     <!-- css for main -->
     <link rel="stylesheet" href="css/main.css">
 
+    <!-- css for customize -->
+    <link rel="stylesheet" href="css/customize.css">
+
   </head>
   <body>
     <!-- js for network-->
     <script src="js/network.js"></script>
+
 
     <!-- navigation -->
     <nav class="navbar navbar-default navbar-fixed-top">
@@ -38,6 +46,12 @@
         </ul>
       <div>
     </nav>
+
+
+
+
+
+
 
     <!-- <nav class="navbar navbar-inverse">
       <div class="container-fluid">
@@ -74,18 +88,10 @@
 
     <nav class="navbar navbar-default navbar-fixed-bottom">
       <div class="container">
-        <p>Slider</p>
+        <div><p id="value"></p></div>
+        <div><div id="slider"></div></div>
+        <script src="js/slider.js"></script>
       </div>
     </nav>
-
-    <!-- Footer -->
-    <!-- <footer class="navbar fixed-bottom"> -->
-      <!-- Copyright -->
-      <!-- <div class="footer-copyright">© 2018 Copyright: -->
-        <!-- <a href="#">http://www.myweb.ttu.edu/tnhondan/teaching.html</a> -->
-      <!-- </div> -->
-      <!-- Copyright -->
-    <!-- </footer> -->
-    <!-- Footer -->
   </body>
 </html>
