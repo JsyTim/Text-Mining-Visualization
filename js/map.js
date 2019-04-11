@@ -42,7 +42,7 @@ var map = L.map('geospatial', {
 //   //   }
 //   // }
 // };
-year = '1995'
+year = '1999'
 for (i = 0; i < districts.features.length; i++) {
   // districts.features[i].properties.dist_num = i
   districts.features[i].properties.genres_nums = []
@@ -53,7 +53,7 @@ for (i = 0; i < districts.features.length; i++) {
     }
   }
 };
-console.log(region_concern['1995']);
+console.log(region_concern['1999']);
 
 var geojson;
 
