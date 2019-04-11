@@ -12,6 +12,13 @@ body {
 .navbar .navbar-brand {
   color: #ff916f !important;
 }
+.text-color {
+  padding-top: 20px;
+  padding-right: 40px;
+  color: #ff916f !important;
+  height:80px;
+  font-size: 24pt;
+}
 
 /* .navbar .navbar-brand:hover,
 .navbar .navbar-brand:focus {

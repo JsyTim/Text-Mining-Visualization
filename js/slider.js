@@ -1,11 +1,11 @@
 var slider = d3
   .sliderHorizontal()
-  .min(1900)
-  .max(2010)
+  .min(1903)
+  .max(2011)
   .ticks(20)
   .step(1)
   .width(960)
-  .default(1990)
+  .default(2000)
   .displayValue(false)
   .on('onchange', val => {
     d3.select('#value').text(val);
@@ -14,7 +14,7 @@ var slider = d3
 d3.select('#slider')
   .append('svg')
   .attr('width', 1080)
-  .attr('height', 100)
+  .attr('height', 80)
   .append('g')
   .attr('transform', 'translate(30,30)')
   .call(slider);
@@ -37,7 +37,7 @@ d3.tsv("data_network/movies.dat").then( data => {
     }
   });
   years.sort();
-  // console.log(years.length);
+  console.log(years.length);
 
   // year-movie directory
   year_movie = {};
@@ -49,7 +49,7 @@ d3.tsv("data_network/movies.dat").then( data => {
     year_movie[d.year].push(d);
   });
 
-  // console.log(year_movie);
+  console.log(year_movie);
 
   //Parse movies
   data.forEach( d => {
