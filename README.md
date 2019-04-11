@@ -1,6 +1,6 @@
 # Project2: Text-Mining Visualization
 ## live demo：https://jsytim.github.io/Text-Mining-Visualization/
-
+## video: https://www.youtube.com/watch?v=G3g-SACQhdc&feature=youtu.be
 
 Siyuan Jiang worked on the Geospaital visualization.
 
