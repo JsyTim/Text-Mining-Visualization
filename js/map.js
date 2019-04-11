@@ -313,3 +313,15 @@ function countsByYear(year){
       onEachFeature: onEachFeature
   }).addTo(map);
 }
+//chagne functino
+$('#ex21').on('slide', function (ev) {
+    // console.log($('#ex21').slider('getValue'));
+        console.log($('#ex21').val());
+        year = $('#ex21').val();
+        // console.log(hour);
+        countsByYear(year);
+        wordCloud(year);
+    });
+    $("#ex21").slider({
+    	tooltip: 'always'
+    });
