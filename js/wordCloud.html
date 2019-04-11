@@ -13,8 +13,6 @@
 
     <script src="tags_with_name.js"></script>
 
-    <script src="https://d3js.org/d3.v4.min.js"></script>
-    <script src="d3.js"></script>
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script src="https://code.highcharts.com/modules/wordcloud.js"></script>
 
@@ -27,70 +25,25 @@
     var testOne = testData[idCount]; //testOne returns the tags and occurrences of the movie with id equal to idCount
     //console.log(testOne);
 
-    let movies = d3.csv("movies.dat.csv", function(d) {
-        return {
-            title : d.title,
-            id : +d.id,
-            year : +d.year
-        };
-    }).then(function(data) {
-        console.log(data[0]);
+    Highcharts.seriesTypes.wordcloud.prototype.deriveFontSize = function (relativeWeight) {
+        var maxFontSize = 25;
+        // Will return a fontSize between 0px and 25px.
+        return Math.floor(maxFontSize * relativeWeight);
+    };
 
-        //Font size of the wordcloud
-        Highcharts.seriesTypes.wordcloud.prototype.deriveFontSize = function (relativeWeight) {
-            var maxFontSize = 25;
-            // Will return a fontSize between 0px and 25px.
-            return Math.floor(maxFontSize * relativeWeight);
-        };
+    //Button to create wordcloud from the tag movie dictionary
+    var btn = document.createElement("BUTTON");
+    btn.innerHTML = "Next";
+    document.body.appendChild(btn);
 
-        //Button to create wordcloud from the tag movie dictionary
-        var btn = document.createElement("BUTTON");
-        btn.innerHTML = "Next";
-        document.body.appendChild(btn);
-
-        //Creates the wordcloud
-        btn.addEventListener ("click", function() {
-            //idCount = data.id;                        //This line is to set idCount equal to the movie id that we click on and needs to be modify to respond to a click on the network
-            //Update the WordCloud
-            var testOne = testData[idCount];
-            cloud = Highcharts.chart('container', {
-                series: [{
-                    type: 'wordcloud',
-                    data: testOne,
-                    name: 'Occurrences'
-                }],
-                title: {
-                    text: data[idCount-1].title
-                }
-            });
-        });
-
-        //Reset the wordcloud to the first movie in the dictionary. Testing purposes only
-        // ***********************************Lines below can be omitted**************************************************
-        var btn2 = document.createElement("BUTTON");
-        btn2.innerHTML = "Reset";
-        document.body.appendChild(btn2);
-
-        btn2.addEventListener ("click", function() {
-            //idCount = data.id;                        //This line is to set idCount equal to the movie id that we click on and needs to be modify to respond to click on the network
-            console.log(idCount);
-            testOne = testData[idCount];
-            cloud = Highcharts.chart('container', {
-                series: [{
-                    type: 'wordcloud',
-                    data: testOne,
-                    name: 'Occurrences'
-                }],
-                title: {
-                    text: data[idCount-1].title
-                }
-            });
-        });
-        //***********************************Lines above can be omitted**************************************************
-
-
-        //Drawing the default wordcloud for the first movie in the tag dictionary
-        //***********************************Lines below can be omitted**************************************************
+    btn.addEventListener ("click", function() {
+        //Choosing the next WordCloud
+        idCount++;
+        //idCount = data.id;                        //This line is to set idCount equal to the movie id that we click on and needs to be modify to respond to a click on the network
+        //Update the WordCloud
+        //console.log(idCount);
+        //Update the WordCloud
+        var testOne = testData[idCount];
         cloud = Highcharts.chart('container', {
             series: [{
                 type: 'wordcloud',
@@ -98,12 +51,48 @@
                 name: 'Occurrences'
             }],
             title: {
-                text: data[idCount-1].title
+                text: "Tags"
             }
         });
-        //***********************************Lines above can be omitted**************************************************
-
     });
+
+    //Reset the wordcloud to the first movie in the dictionary. Testing purposes only
+    // ***********************************Lines below can be omitted**************************************************
+    var btn2 = document.createElement("BUTTON");
+    btn2.innerHTML = "Reset";
+    document.body.appendChild(btn2);
+
+    btn2.addEventListener ("click", function() {
+        //idCount = data.id;
+        idCount = 1; //This line is to set idCount equal to the movie id that we click on and needs to be modify
+        console.log(idCount);
+        testOne = testData[idCount];
+        cloud = Highcharts.chart('container', {
+            series: [{
+                type: 'wordcloud',
+                data: testOne,
+                name: 'Occurrences'
+            }],
+            title: {
+                text: "Tags"
+            }
+        });
+    });
+    //***********************************Lines above can be omitted**************************************************
+
+    //Drawing the default wordcloud for the first movie in the tag dictionary
+    //***********************************Lines below can be omitted**************************************************
+    cloud = Highcharts.chart('container', {
+        series: [{
+            type: 'wordcloud',
+            data: testOne,
+            name: 'Occurrences'
+        }],
+        title: {
+            text: "Tags"
+        }
+    });
+    //***********************************Lines above can be omitted**************************************************
 
 </script>
 </body>
