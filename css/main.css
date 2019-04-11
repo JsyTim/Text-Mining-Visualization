@@ -5,26 +5,26 @@ body {
   font-size: 12pt;
 }
 
-.navbar {
-  background-color: #e74c3c !important;
-}
+/* .navbar {
+  background-color: ##c0cdd1 !important;
+} */
 
 .navbar .navbar-brand {
-  color: #ecf0f1 !important;
+  color: #ff916f !important;
 }
 
-.navbar .navbar-brand:hover,
+/* .navbar .navbar-brand:hover,
 .navbar .navbar-brand:focus {
   color: #ffbbbc !important;
 }
 
 .navbar .navbar-text {
   color: #ecf0f1 !important;
-}
+} */
 
-.footer {
+/* .footer {
   height: 50px;
-  background-color: #e74c3c;
+  background-color: ##c0cdd1;
   position: bottom;
 }
 
@@ -37,7 +37,7 @@ body {
 .footer .footer-copyright:hover,
 .footer .footer-copyright:focus {
   color: #ffbbbc !important;
-}
+} */
 
 svg {
     font: 12px sans-serif;
