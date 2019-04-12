@@ -1,301 +1,251 @@
-var slider = d3
-  .sliderHorizontal()
-  .min(1903)
-  .max(2011)
-  .ticks(20)
-  .step(1)
-  .width(960)
-  .default(2000)
-  .displayValue(false)
-  .on('onchange', val => {
-    d3.select('#value').text(val);
-  });
+// based on prepared DOM, initialize echarts instance
+var networkChart = echarts.init(document.getElementById('network'));
+networkChart.showLoading();
+//Network parameters
+edge_length = 150
+repulsion_set = 200
+gravity_set = 0.2
+fontsize_set = 18
+color_scheme = ['#F9F871', '#FFC75F', '#FF9671', '#FF6F91', '#D65DB1', '#845EC2']
 
-d3.select('#slider')
-  .append('svg')
-  .attr('width', 1080)
-  .attr('height', 80)
-  .append('g')
-  .attr('transform', 'translate(30,30)')
-  .call(slider);
+d3.json("data/actors-word.json").then( actor_word => {
+  $.get('data/movie-network.json', function (movie_network) {
+    d3.json("data/movies-map.json").then( movies_map => {
+      $.get('https://s3-us-west-2.amazonaws.com/s.cdpn.io/95368/world.json', function(worldJson){
+        // echarts.registerMap('world',worldJson);
+        // var mapChart = echarts.init(document.getElementById('geospatial'));
+        // mapChart.showLoading();
 
-var genres = {};
-var movies = {};
-var dataset = [];
+      //Initialize map
+      countsByYear('1990');
+      d3.select('#value').text("1990");
 
-var YEAR_SELECT = 2000;
-var MAX_NUM = 180;
-
-//read data_network
-d3.tsv("data_network/movies.dat").then( data => {
-
-  // List all years
-  var years = [];
-  data.forEach( d=> {
-    if( !years.includes(d.year)) {
-      years.push(d.year);
-    }
-  });
-  years.sort();
-  console.log(years.length);
-
-  // year-movie directory
-  year_movie = {};
-  years.forEach( d=> {
-    year_movie[d] = [];
-  });
-  // Sort all movies by years
-  data.forEach( d=> {
-    year_movie[d.year].push(d);
-  });
-
-  console.log(year_movie);
-
-  //Parse movies
-  data.forEach( d => {
-    var key = d.id;
-    var values = {};
-    values.title = d.title;
-    values.pic = d.rtPictureURL;
-    movies[key] = values;
-  });
-  // console.log(movies[1]);
-
-  d3.tsv("data_network/movie_genres.dat").then(data => {
-    //Parse genres
-    var sel_movies = data.filter( d => d.movieID <= MAX_NUM);
-    sel_movies.forEach( d => {
-      var title = movies[parseInt(d.movieID)].title;
-      if (!(d.genre in genres)) {
-        genres[d.genre] = [title];
+//------------------------------------------ wordcloud
+      totalnum = 200;
+      dataset = actor_word["1990"];
+      if (dataset.length >= totalnum) {
+        reducedDataset = dataset.slice(1,totalnum);
       }
       else {
-        genres[d.genre].push(title);
+        reducedDataset = dataset;
       }
-    });
-    // console.log(genres);
 
+      var cloud = Highcharts.chart('wordcloud', {
+          series: [{
+              type: 'wordcloud',
+              data: reducedDataset,
+              name: 'Occurrences'
+          }],
+          title: {
+              text: 'Wordcloud of actors'
+          }
+      });
 
-    // build dataset
-    dataset = Object.keys(genres).map( key => {
-      return [key, genres[key]];
-    });
-    dataset.sort( (a, b) => {
-      return (a[0] < b[0])? -1 : 1;
-    })
-    // console.log(dataset);
+//------------------------------------------ network
+      this_network = movie_network["1990"]
+      networkChart.hideLoading();
+      option = {
+          legend: {
+              textStyle: {
+                fontSize: fontsize_set
+              },
+              data: ['0-Star', '1-Star', '2-Star', '3-Star', '4-Star', '5-Star']
+          },
+          series: [{
+              type: 'graph',
+              layout: 'force',
+              animation: false,
+              label: {
+                  normal: {
+                      position: 'right',
+                      formatter: '{b}'
+                  }
+              },
+              draggable: true,
+              data: this_network.nodes.map( node => {
+                node.id = node["id"];
+                return node;
+              }),
+              categories: this_network.categories,
+              force: {
+                initLayout: 'circular',
+                edgeLength: edge_length,
+                repulsion: repulsion_set,
+                gravity: gravity_set
+              },
+              edges: this_network.links
+          }]
+      };
 
-    var outer = d3.map();
-    var inner = [];
-    var links = [];
-
-    var outerId = [0];
-
-    dataset.forEach( d => {
-      if( d == null)
-        return;
-      i = { id: 'i' + inner.length, name: d[0], related_links:[]};
-      i.related_nodes = [i.id];
-      inner.push(i);
-
-      if(!Array.isArray(d[1]))
-        d[1] = [d[1]];
-
-      d[1].forEach( d1 => {
-        o = outer.get(d1);
-
-        if(o == null) {
-          o = { name: d1, id: 'o' + outerId[0], related_links:[]};
-          o.related_nodes = [o.id];
-          outerId[0] = outerId[0] + 1;
-
-          outer.set(d1, o);
+      networkChart.setOption(option);
+//------------------------------------------ map Echarts
+    // this_map = movies_map['1990'];
+    // console.log(this_map);
+    // mapChart.hideLoading();
+    // map_option = {
+    //   title: {
+    //       text: 'Filming Locations of the Movies in ' + '1990',
+    //       left: 'center',
+    //       top: 'top'
+    //   },
+    //   tooltip: {
+    //       trigger: 'item',
+    //       formatter: function (params) {
+    //           var value = (params.value + '').split('.');
+    //           value = value[0].replace(/(\d{1,3})(?=(?:\d{3})+(?!\d))/g, '$1,');
+    //           return params.seriesName + '<br/>' + params.name + ' : ' + value;
+    //       }
+    //   },
+    //   toolbox: {
+    //       show: true,
+    //       orient: 'vertical',
+    //       left: 'right',
+    //       top: 'center'
+    //   },
+    //   visualMap: {
+    //       min: 0,
+    //       max: 250,
+    //       text:['High','Low'],
+    //       realtime: false,
+    //       calculable: true,
+    //       inRange: {
+    //           color: ['lightskyblue','yellow', 'orangered']
+    //       }
+    //   },
+    //   series: [
+    //       {
+    //           name: 'Filming Locations of the Movies in ' + '1990',
+    //           type: 'map',
+    //           mapType: 'world',
+    //           roam: true,
+    //           itemStyle:{
+    //               emphasis:{label:{show:true}}
+    //           },
+    //           data:this_map
+    //         }
+    //       ]
+    // };
+    //
+    // mapChart.setOption(map_option);
+//------------------------------------------ slider
+    var slider = d3
+      .sliderHorizontal()
+      .min(1903)
+      .max(2011)
+      .ticks(20)
+      .step(1)
+      .width(960)
+      .default(1990)
+      .displayValue(false)
+      .on('onchange', val => {
+        d3.select('#value').text(val);
+        countsByYear(val);
+  //------------------------------------------ wordcloud control
+        update_word = actor_word[val.toString()];
+        if (update_word.length >= totalnum) {
+          reduced_word = update_word.slice(1,totalnum);
+        }
+        else {
+          reduced_word = update_word;
         }
 
-        l = {id: 'l-' + i.id + '-' + o.id, inner: i, outer: o}
-        links.push(l);
+        cloud.series[0].setData(reduced_word);
+  //------------------------------------------ network control
+        networkChart.showLoading();
+        update_network = movie_network[val];
+        update_option = {
+            legend: {
+                textStyle: {
+                  fontSize: fontsize_set
+                },
+                data: ['0-Star', '1-Star', '2-Star', '3-Star', '4-Star', '5-Star']
+            },
+            series: [{
+                type: 'graph',
+                layout: 'force',
+                animation: false,
+                label: {
+                    normal: {
+                        position: 'right',
+                        formatter: '{b}'
+                    }
+                },
+                draggable: true,
+                data: update_network.nodes.map( node => {
+                  node.id = node["id"];
+                  return node;
+                }),
+                categories: update_network.categories,
+                force: {
+                  initLayout: 'circular',
+                  edgeLength: edge_length,
+                  repulsion: repulsion_set,
+                  gravity: gravity_set
+                },
+                edges: update_network.links
+            }]
+         };
+         networkChart.hideLoading();
+         networkChart.setOption(update_option);
+//------------------------------------------ map Echarts control
+         // mapChart.showLoading();
+         // update_map = movies_map[val];
+         // update_map_option = {
+         //   title: {
+         //       text: 'Filming Locations of the Movies in ' + val,
+         //       left: 'center',
+         //       top: 'top'
+         //   },
+         //   tooltip: {
+         //       trigger: 'item',
+         //       formatter: function (params) {
+         //           var value = (params.value + '').split('.');
+         //           value = value[0].replace(/(\d{1,3})(?=(?:\d{3})+(?!\d))/g, '$1,')
+         //                   + '.' + value[1];
+         //           return params.seriesName + '<br/>' + params.name + ' : ' + value;
+         //       }
+         //   },
+         //   toolbox: {
+         //       show: true,
+         //       orient: 'vertical',
+         //       left: 'right',
+         //       top: 'center'
+         //   },
+         //   visualMap: {
+         //       min: 0,
+         //       max: 250,
+         //       text:['High','Low'],
+         //       realtime: false,
+         //       calculable: true,
+         //       inRange: {
+         //           color: ['lightskyblue','yellow', 'orangered']
+         //       }
+         //   },
+         //   series: [
+         //       {
+         //           name: 'Filming Locations of the Movies in ' + val,
+         //           type: 'map',
+         //           mapType: 'world',
+         //           roam: true,
+         //           itemStyle:{
+         //               emphasis:{label:{show:true}}
+         //           },
+         //           data:update_map
+         //         }
+         //       ]
+         // };
+         // mapChart.hideLoading();
+         // mapChart.setOption(update_map_option);
+      });
 
-        i.related_nodes.push(o.id);
-        i.related_links.push(l.id);
-        o.related_nodes.push(i.id);
-        o.related_links.push(l.id);
+    d3.select('#slider')
+      .append('svg')
+      .attr('width', 1080)
+      .attr('height', 80)
+      .append('g')
+      .attr('transform', 'translate(30,30)')
+      .call(slider);
       });
     });
-
-    dataset = {
-      inner: inner,
-      outer: outer.values(),
-      links: links
-    }
-    console.log(dataset);
-    // console.log(dataset.inner.length);
-
-    outer = dataset.outer;
-    dataset.outer = Array(outer.length);
-
-    var i1 = 0;
-    var i2 = outer.length - 1;
-
-    for( var i = 0; i < dataset.outer.length; ++i) {
-      if( i % 2 == 1)
-        dataset.outer[i2--] = outer[i];
-      else
-        dataset.outer[i1++] = outer[i];
-    }
-
-    // console.log(dataset.outer.reduce( (a,b) => { return a + b.related_links.length;}, 0)/dataset.outer.length);
-
-    var colors = ["#F78571","#F98286","#F4839C","#E788B1","#D490C2","#BB99CF","#9DA2D6","#7DAAD7","#5BB1D0","#3CB6C4","#2CB9B3","#37BA9E","#4EBA87","#68B871","#82B55D","#9BB04E","#B3AA44","#C9A243","#DD9A4A","#ED9157"];
-    // console.log(colors.length);
-    // var color = d3.scaleLinear()
-    //               .domain([60, 220])
-    //               .range([colors.length-1, 0])
-    //               .clamp(true);
-
-    var diameter= 750;
-    var cavas_size = diameter + 300;
-    var rect_width = 100;
-    var rect_height = diameter/dataset.inner.length - 20;
-
-    var link_width = "1px";
-
-    var il = dataset.inner.length;
-    var ol = dataset.outer.length;
-
-    var inner_y = d3.scaleLinear()
-                    .domain([0, il])
-                    .range([-(il * rect_height)/2, (il * rect_height)/2]);
-
-    mid  = (dataset.outer.length/2.0);
-    var outer_x = d3.scaleLinear()
-                    .domain([0, mid, mid, dataset.outer.length])
-                    .range([15, 165, 195, 350]);
-    var outer_y = d3.scaleLinear()
-                    .domain([0, dataset.outer.length])
-                    .range([0, diameter / 2 - 120]);
-
-    dataset.outer = dataset.outer.map( (d, i) => {
-      d.x = outer_x(i);
-      d.y = diameter/3;
-      return d;
-    });
-    dataset.inner = dataset.inner.map( (d, i) => {
-      d.x = -(rect_width / 2);
-      d.y = inner_y(i);
-      return d;
-    });
-
-    function get_color(name) {
-      var array = dataset.inner.map(d => d.name);
-      // console.log(array)
-      var index = array.indexOf(name)
-      return colors[index];
-    }
-
-    function projectX(x) {
-      return ((x - 90) / 180 * Math.PI) - (Math.PI/2);
-    }
-
-    var svg = d3.select("#network").append("svg")
-                .attr("width", cavas_size)
-                .attr("height", cavas_size)
-                .append("g")
-                .attr("transform", "translate(" + cavas_size/2 + "," + cavas_size/2 + ")");
-
-    //links
-    var link = svg.append('g').attr('class', 'links').selectAll('.link')
-                  .data(dataset.links)
-                  .enter().append('path')
-                  .attr('id', d => d.id)
-                  .attr("d", d => {
-                    var source = {x: d.outer.y * Math.cos(projectX(d.outer.x)),
-                                  y: -d.outer.y * Math.sin(projectX(d.outer.x))};
-                    var target = {x: d.inner.y + rect_height/2,
-                                  y: d.outer.x > 180 ? d.inner.x : d.inner.x + rect_width};
-                    return diagonal(source, target);
-                  })
-                  .style("fill", "none")
-                  .attr('stroke', d => get_color(d.inner.name))
-                  .attr('stroke-width', link_width);
-
-    //outer nodes
-    var onode = svg.append('g').attr("class", "outer_node").selectAll(".outer_node")
-                   .data(dataset.outer)
-                   .enter().append("g")
-                   .attr("transform", d => {return "rotate(" + (d.x - 90) + ")translate(" + d.y + ")";})
-                   .on("mouseover", mouseover)
-                   .on("mouseout", mouseout);
-
-    onode.append("circle")
-         .attr('id', d => d.id)
-         .attr('r', 3);
-
-    onode.append("circle")
-         .attr('r', 5)
-         .attr('visibility', 'hidden');
-
-    onode.append("text")
-         .attr('id', d => {return d.id + '-txt'})
-         .attr('dy', '.31em')
-         .attr('text-anchor', d => {return d.x < 180 ? "start" : "end";})
-         .attr("transform", d => { return d.x < 180 ? "translate(8)" : "rotate(180)translate(-8)"; })
-         .text(d => d.name);
-
-    // inner nodes
-    var inode = svg.append('g').attr("class", "inner_node").selectAll(".inner_node")
-                   .data(dataset.inner)
-                   .enter().append("g")
-                   .attr("transform", (d, i) => { return "translate(" + d.x + "," + d.y + ")";})
-                   .on("mouseover", mouseover)
-                   .on("mouseout", mouseout);
-
-    inode.append('rect')
-       .attr('width', rect_width)
-       .attr('height', rect_height)
-       .attr('id', d => d.id)
-       .attr('fill', d => get_color(d.name));
-
-    inode.append("text")
-    	.attr('id', function(d) { return d.id + '-txt'; })
-       .attr('text-anchor', 'middle')
-       .attr("transform", "translate(" + rect_width/2 + ", " + rect_height * .75 + ")")
-       .text(d => d.name);
-
-    function mouseover(d)
-    {
-    	// bring to front
-    	d3.selectAll('.links .link').sort(function(a, b){ return d.related_links.indexOf(a.id); });
-
-       for (var i = 0; i < d.related_nodes.length; i++)
-       {
-           d3.select('#' + d.related_nodes[i]).classed('highlight', true);
-           d3.select('#' + d.related_nodes[i] + '-txt').attr("font-weight", 'bold').attr("font-size", "15px");
-       }
-
-       for (var i = 0; i < d.related_links.length; i++)
-           d3.select('#' + d.related_links[i]).attr('stroke-width', '3.5px');
-    }
-
-    function mouseout(d)
-    {
-       for (var i = 0; i < d.related_nodes.length; i++)
-       {
-           d3.select('#' + d.related_nodes[i]).classed('highlight', false);
-           d3.select('#' + d.related_nodes[i] + '-txt').attr("font-weight", 'normal').attr("font-size", "12px");;
-       }
-
-       for (var i = 0; i < d.related_links.length; i++)
-           d3.select('#' + d.related_links[i]).attr('stroke-width', link_width);
-    }
-
-    // Creates a curved (diagonal) path from parent to the child nodes
-    function diagonal(s, d) {
-      path = `M ${s.y} ${s.x}
-              C ${(s.y + d.y) / 2} ${s.x},
-                ${(s.y + d.y) / 2} ${d.x},
-                ${d.y} ${d.x}`
-      return path
-    };
-
   });
 });

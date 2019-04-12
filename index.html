@@ -4,42 +4,30 @@
     <meta charset="utf-8">
     <title>Text, Network, and Geospatial Visualization</title>
     <!-- js for jquery -->
-    <script src="js/jquery.min.js"></script>
-    <!-- js for bootstrap -->
-    <script src="js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
 
     <!-- js for d3 -->
-    <script src="https://d3js.org/d3.v4.min.js"></script>
-    <!-- <script src="https://d3js.org/d3.v5.js"></script> -->
-
-    <!-- js for map -->
-    <!-- <script src="js/map.js"></script> -->
-
-    <!-- js for network-->
-    <!-- <script src="js/network.js"></script> -->
+    <script src="https://d3js.org/d3.v5.js"></script>
+    <!-- <script src="https://d3js.org/d3-queue.v3.min.js"></script> -->
 
     <!-- for slider -->
-    <!-- <script src="https://unpkg.com/d3-simple-slider"></script> -->
+    <script src="https://unpkg.com/d3-simple-slider"></script>
+    <!-- for wordcloud -->
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/wordcloud.js"></script>
+
+    <script src="js/echarts.min.js"></script>
 
     <!-- css for bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
 
     <!-- css for main -->
     <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="css/leaflet.css" />
+    <link rel="stylesheet" href="css/map.css">
+    <link rel="stylesheet" href="css/leaflet.css">
     <script src="js/leaflet.js"></script>
-    <script src="data/country.geo.json"></script>
-    <script src="data/region_concern.json"></script>
-    <link rel="stylesheet" type="text/css" href="css/map.css">
-    <script src="  https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.6.1/bootstrap-slider.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.6.1/css/bootstrap-slider.css">
-
-
-    <script src="https://code.highcharts.com/highcharts.js"></script>
-    <script src="https://code.highcharts.com/modules/wordcloud.js"></script>
-    <script src="js/word_cloud_all.js"></script>
-    <script src="js/wordcloud.js"></script>
-    <link rel="stylesheet" href="/css/wordcloud.css">
+    <script src="js/region_concern.js"></script>
+    <script src="js/country_geo.js"></script>
   </head>
   <body>
 
@@ -50,59 +38,50 @@
           <a class="navbar-brand">Project2: Text, Network, and Geospatial Visualization</a>
         </div>
         <ul class="nav navbar-nav">
-          <li><a href="#geospatial" onclick="countsByYear(1995)">Geospatial</a></li>
-          <li><a href="#network">Network</a></li>
-          <li><a href="#text">Text</a></li>
+          <li><a href="#map_pad">Geospatial</a></li>
+          <li><a href="#net_pad">Network</a></li>
+          <li><a href="#word_pad">Text</a></li>
         </ul>
       <div>
     </nav>
+
     <!-- container-fluid -->
     <div class="container-fluid">
+      <div id = "map_pad" class="row">
+        <!-- div for blank -->
+        <div class="col-md-12" style="min-height:50px; background-color: #e9e9e9"></div>
+      </div><!-- row -->
       <div class="row">
-
         <!-- div for geo-Mapping -->
-        <div class="col-md-12" style="min-height:50px;">
-
-        </div>
-        <div id="geospatial" class="col-md-8" style="min-height:960px; background-color: #f6f6f6"></div>
-        <div id="wrapper" class="col-md-12"></div>
-
-        <!-- <script src="js/genreBar.js"></script> -->
+        <div id="geospatial" class="col-md-12" style="min-height:960px; background-color: #f6f6f6"></div>
+        <script src="js/map.js"></script>
+      </div><!-- row -->
+      <div id = "net_pad" class="row">
+        <!-- div for blank -->
+        <div class="col-md-12" style="min-height:50px; background-color: #e9e9e9"></div>
       </div><!-- row -->
       <div class="row">
         <!-- div for wordcloud -->
-        <div id ="network" class="col-md-12" style="min-height:0px; background-color: #e9e9e9">Network</div>
-        <iframe src="network.html" width="1200px" height="1200px" frameborder="no" scrolling="no"></iframe>
+        <div id ="network" class="col-md-12" style="min-height:960px; background-color: #e9e9e9"></div>
+      </div><!-- row -->
+      <div id = "word_pad" class="row">
+        <!-- div for blank -->
+        <div class="col-md-12" style="min-height:50px; background-color: #e9e9e9"></div>
       </div><!-- row -->
       <div class="row">
-        <div id="text" class="col-md-12" style="min-height:0px; background-color:#f6f6f6">Wordcloud
-        <div id="containerGenres"></div>
-        <div id="containerActors"></div>
-        <div id="containerDirectors"></div>
-        </div>
+        <div id="wordcloud" class="col-md-12" style="min-height:960px; background-color:#f6f6f6"></div>
       </div><!-- row -->
     </div><!-- container -->
 
     <nav class="navbar navbar-default navbar-fixed-bottom">
       <div class="container">
-        <!-- <div class="text-center text-color"><p id="value"></p></div>
-        <div><div id="slider"></div></div> -->
         <div class="row">
-		  <div class="col-md-1"><div>
-          <div class="col-md-11">
-            <input id="ex21" style="min-width:500px; "type="text"
-                data-provide="slider"
-                data-slider-ticks="[1903, 2010]"
-                data-slider-min="1903"
-                data-slider-max="2010"
-                data-slider-step="1"
-                data-slider-tooltip="show"/>
-            </div>
-            <input id="ex1" data-slider-id='ex1Slider' type="text" data-slider-min="1903" data-slider-max="2010" data-slider-step="1"/>
+          <div class="col-md-1"><p id="value" class="text-center text-color"></p></div>
+          <div class="col-md-11"><div id="slider"></div></div>
+          <script src="js/slider.js"></script>
         </div>
-        <script src="js/map.js"></script>
-        <!-- <script src="js/slider.js"></script> -->
       </div>
     </nav>
+
   </body>
 </html>
