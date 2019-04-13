@@ -32,3 +32,9 @@ The force directed visual shows the movies that had the same genre released that
 Roberto Gomez Pomares
 
 The word cloud looks at the data for the actors of the year selected and creates a visual with the most recurring actors of that year and how many times they appear in a movie. When you hover over the name of the actor a small window will appear next to your cursor giving you the number of times they have appear that year. When the slider for the years is moved, the word cloud will update to whatever year is now selected.
+
+## Findings
+
+- For the map, not many countries aside from the US and Australia were highlighted until the 1980s to 1990s. This could be do to the data being gathered from the US so not many people could see movies from other countries until reaching the modern ear.
+- The Drama and Romance genres were the most common ganres in the early years until around the late 70s, when comedy and thriller start to have more movies.
+- By the 90s, action and adventure genres started to be more common as well
