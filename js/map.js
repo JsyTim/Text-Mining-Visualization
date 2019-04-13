@@ -20,9 +20,6 @@ info.update = function (props) {
     this._div.innerHTML = '<h4>Detailed Information</h4>' +
         //ternary
         (props ?
-         if(props.count == 'undefined'){
-              props.count = 0
-          }
         //if hovering on a district
           "District: " + props.name +
           "<br>Movie Amount:" + props.count 
