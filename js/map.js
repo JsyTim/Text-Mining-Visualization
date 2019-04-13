@@ -6,32 +6,30 @@ var map = L.map('geospatial', {
   attributionControl: false,
 }).setView([10.074329, 42.534796], 2.2);
 
-// //initialize an info control
-// var info = L.control();
-//
-// info.onAdd = function (map) {
-//     this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
-//     this.update();
-//     return this._div;
-// };
-//
-// // method that we will use to update the control based on feature properties passed
-// info.update = function (props) {
-//
-//     this._div.innerHTML = '<h4>Detailed Information</h4>' +
-//         //ternary
-//         (props ?
-//         //if hovering on a district
-//           "District: " + props.Region +
-//           "<br>Water:" + props.Water + "%" +
-//           "<br>Help: " + props.Help +
-//           "<br>Food: " + props.Food + "%"
-//         //if not hovering on a district
-//         : 'Hover over a district');
-// };
-//
-// //add info to map
-// info.addTo(map);
+//initialize an info control
+var info = L.control();
+
+info.onAdd = function (map) {
+    this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+    this.update();
+    return this._div;
+};
+
+// method that we will use to update the control based on feature properties passed
+info.update = function (props) {
+
+    this._div.innerHTML = '<h4>Detailed Information</h4>' +
+        //ternary
+        (props ?
+        //if hovering on a district
+          "District: " + props.name +
+          "<br>Count:" + props.count 
+        //if not hovering on a district
+        : 'Hover over a district');
+};
+
+//add info to map
+info.addTo(map);
 
 //merge the two data sets
 // for (i = 0; i < districts.features.length; i++) {
@@ -246,7 +244,7 @@ function highlightFeature(e) {
     console.log(nums)
     genreBar(nums);
      //on hover change infobox
-    // info.update(layer.feature.properties);
+    info.update(layer.feature.properties);
 }
 
 
@@ -254,7 +252,7 @@ function highlightFeature(e) {
 function resetHighlight(e) {
     style_override = {};
     geojson.resetStyle(e.target);
-    // info.update();
+    info.update();
 }
 
 
