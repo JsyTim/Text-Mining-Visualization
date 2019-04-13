@@ -17,13 +17,15 @@ info.onAdd = function (map) {
 
 // method that we will use to update the control based on feature properties passed
 info.update = function (props) {
-
+    if(props.count == 'undefined'){
+        props.count = 0;
+    }
     this._div.innerHTML = '<h4>Detailed Information</h4>' +
         //ternary
         (props ?
         //if hovering on a district
           "District: " + props.name +
-          "<br>Count:" + props.count 
+          "<br>Movie Amount:" + props.count 
         //if not hovering on a district
         : 'Hover over a district');
 };
