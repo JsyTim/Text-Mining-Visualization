@@ -130,7 +130,7 @@ d3.json("data/actors-word.json").then( actor_word => {
 //------------------------------------------ slider
     var slider = d3
       .sliderHorizontal()
-      .min(1903)
+      .min(1916)
       .max(2011)
       .ticks(20)
       .step(1)
