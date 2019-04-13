@@ -1,6 +1,6 @@
 # Project2: Text-Mining Visualization
 
-## Video
+## Video: https://youtu.be/vO1dXyj41n8
 
 ## Live Demo：https://jsytim.github.io/Text-Mining-Visualization/
 
