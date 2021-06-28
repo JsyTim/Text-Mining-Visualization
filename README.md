@@ -2,7 +2,7 @@
 
 ## Video: https://youtu.be/vO1dXyj41n8
 
-## Live Demo：https://jsytim.github.io/Text-Mining-Visualization/
+## Live Demo：https://tim-siyuan.github.io/Text-Mining-Visualization/
 
 
 ## Data
